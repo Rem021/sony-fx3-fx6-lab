@@ -5,7 +5,7 @@
 - **Orca Category Workspace**: `FX3｜FX6 系统移植与跨机型总览`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab`
 - **Created At**: `2026-11-06T08:29:55.003Z`
-- **Updated At**: `2026-11-06T14:02:16.147Z`
+- **Updated At**: `2026-11-06T14:03:16.153Z`
 - **Captured Messages (User / Assistant)**: `4`
 
 ---

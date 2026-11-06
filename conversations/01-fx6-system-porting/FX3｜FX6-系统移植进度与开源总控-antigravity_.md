@@ -5,8 +5,8 @@
 - **Orca Category Workspace**: `FX3｜FX6 系统移植与跨机型总览`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab`
 - **Created At**: `2026-11-06T08:29:55.003Z`
-- **Updated At**: `2026-11-06T14:22:48.919Z`
-- **Captured Messages (User / Assistant)**: `4`
+- **Updated At**: `2026-11-06T14:23:48.923Z`
+- **Captured Messages (User / Assistant)**: `5`
 
 ---
 
@@ -67,5 +67,11 @@
    - **对话导出与归类脚本**：[`scripts/export_orca_conversations.mjs`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/scripts/export_orca_conversations.mjs)
    - **GitHub 实时同步脚本**：[`scripts/realtime_github_sync.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/scripts/realtime_github_sync.py)（自动过滤专有固件二进制与 `>25MB` 大文件，并自动脱敏 Token/API Key）
    - **macOS LaunchAgent**：`~/Library/LaunchAgents/com.kafu.sony-fx3-fx6-github-sync.plist`（备份于 [`scripts/com.kafu.sony-fx3-fx6-github-sync.plist`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/scripts/com.kafu.sony-fx3-fx6-github-sync.plist)），已通过 `launchctl bootstrap` 激活并实测自动提交推送成功（`last exit code = 0`）。
+
+---
+
+## 👤 User / Coordinator
+
+[Image #1] 是要刷新一下吗？嗯，为什么我还没有看到这个新的项目？还有就是其实不用每60秒就监测，去同步一下。嗯，就是可以告诉Agent，就是做出来一个大点去同步一下就好。
 
 ---

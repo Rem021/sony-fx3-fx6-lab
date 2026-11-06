@@ -18,7 +18,7 @@
 
 | # | Conversation Title | Agent | Messages | Updated (UTC) | Archive Link |
 |---|---|---|---|---|---|
-| 1 | **FX3｜FX6 系统移植进度与开源总控** | `antigravity` | 5 | `2026-11-06T14:33Z` | [View Archive](../conversations/01-fx6-system-porting/FX3｜FX6-系统移植进度与开源总控-antigravity_.md) |
+| 1 | **FX3｜FX6 系统移植进度与开源总控** | `antigravity` | 5 | `2026-11-06T14:35Z` | [View Archive](../conversations/01-fx6-system-porting/FX3｜FX6-系统移植进度与开源总控-antigravity_.md) |
 | 2 | **FX6｜系统移植到 FX3 模拟器与 CapID 门禁** | `antigravity` | 2 | `2026-11-06T13:35Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜系统移植到-FX3-模拟器与-CapID-门禁-bd85f19c-07b.md) |
 | 3 | **FX6｜根镜像构造与早期引导冒烟测试** | `codex` | 17 | `2026-11-06T13:35Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜根镜像构造与早期引导冒烟测试-2029c357-e10.md) |
 | 4 | **FX6｜启动门禁与硬件缺口深度审计** | `codex` | 10 | `2026-11-05T16:03Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜启动门禁与硬件缺口深度审计-7a4acb16-696.md) |

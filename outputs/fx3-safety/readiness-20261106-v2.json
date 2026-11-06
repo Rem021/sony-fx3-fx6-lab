@@ -1,0 +1,74 @@
+{
+  "schema": "fx3-research-safety-inventory-v2",
+  "evaluated_utc": "2026-11-06T17:16:49.827596+00:00",
+  "state": "DEFENSIVE_SANDBOX_AND_READONLY_SERVICE_VERIFIED",
+  "persistent_write_release": false,
+  "is_flash_authorization_or_recovery_certificate": false,
+  "summary": {
+    "total_gates": 12,
+    "verified_gates": 9,
+    "blocked_or_pending_gates": 3
+  },
+  "gates": [
+    {
+      "gate_id": "G01_official_reference_integrity",
+      "status": "VERIFIED",
+      "evidence": "Official FX3 7.02 appFw.so (545c5053...), libmpr.so (9aeef3b9...), cpapp-b.bin (c90d00d8...), and 2.04/2.05 p1 libraries verified."
+    },
+    {
+      "gate_id": "G02_authenticated_usb_service_session",
+      "status": "VERIFIED_ON_HARDWARE",
+      "evidence": "Stage 285: 124-frame closed-loop MSC (054C:0DA1) -> 7-round auth -> SERVICE (054C:0336) -> read0 (88B) -> STOP -> same-port MSC return (native_return=0)."
+    },
+    {
+      "gate_id": "G03_adjust_control_and_jiritsu_wire_contract",
+      "status": "VERIFIED_OFFLINE",
+      "evidence": "Stage 286 & 288: AdjustControlFunc (0x0040, category 0x1001) Phase 1/4/16 DMM lifecycle, 00/00 ff 00 prefixes, and /tmp/jbusy ENOENT precondition verified."
+    },
+    {
+      "gate_id": "G04_offline_p1_recovery_and_rollback_engine",
+      "status": "VERIFIED_OFFLINE",
+      "evidence": "fx3_recovery v0.5: FAT12 cycle/cross-link check, SquashFS pack_same_size Z_SYNC_FLUSH length invariance, and byte-exact rollback restoration."
+    },
+    {
+      "gate_id": "G05_static_aarch64_capture_workers",
+      "status": "VERIFIED_EMULATED",
+      "evidence": "Freestanding static AArch64 ELF workers (fx3_p1_reader.c & fx3_boot_reader.c) + custom elflink.py verified across 58 unit & fault-injection tests."
+    },
+    {
+      "gate_id": "G06_bootloader_and_sector0_contract",
+      "status": "VERIFIED_STATIC",
+      "evidence": "Octal-SPI NOR sector map (infomisc/DGU/LdrBkup/loader_nor/MIS+ddrtraining/cpapp-b) and eMMC Sector 0 ('8246' '2.00' 30-entry table) audited."
+    },
+    {
+      "gate_id": "G07_backup_bin_bk4_and_fa0080_contract",
+      "status": "VERIFIED_STATIC",
+      "evidence": "loader_nor.bin BK4\\0 selector (0xfe04c7a8 -> 0xfe04d584: word4=0xaaaaaaaa, byte8=1, signed word2c), 0xfa0080 64-slot table, and 0x02cf0214/0218 contract verified."
+    },
+    {
+      "gate_id": "G08_qemu_stage0_preflash_sandbox",
+      "status": "VERIFIED",
+      "evidence": "FX3 QEMU VM (AP70-AP105 Web UI r10-r48) + FX6 hybrid VM (180s zero-Oops MEDIA_START) + detect_serial_faults.py fail-closed assertion/fault detector."
+    },
+    {
+      "gate_id": "G09_failsafe_4layer_overlay_and_watchdog",
+      "status": "VERIFIED_ARCHITECTURE",
+      "evidence": "Layer 1 RAM mount --bind + Layer 2 Clear-Before-Exec /tmp/mod_arm_once + Layer 3 45s BusyBox watchdog + Layer 4 3-strike /setting/updater/mode+mode5 auto-arming."
+    },
+    {
+      "gate_id": "G10_same_body_tier0_full_backup_checkpoint",
+      "status": "BLOCKED_PENDING_READBACK",
+      "evidence": "Requires two-pass idempotent readback dumps of physical camera Sector 0, boot0/1, p1, p2 (Backup.bin/psd.bin/defdet.bin), p6 (Jiritsu), p12 (/cert), p18 (lensfile.bin), and SPI NOR (ddrtraining.dat)."
+    },
+    {
+      "gate_id": "G11_independent_hardware_recovery_readiness",
+      "status": "DESIGN_VERIFIED_AWAITING_TIER0_BACKUP",
+      "evidence": "Proven that loader_nor.bin has NO auto-failover from p3 to p1 unless /setting/updater/mode* is armed; therefore p1-first staging or init2 watchdog hook is mandatory before any p15 trial."
+    },
+    {
+      "gate_id": "G12_persistent_flash_write_authorization",
+      "status": "BLOCKED_BY_SAFETY_REDLINE",
+      "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup) is completed and verified."
+    }
+  ]
+}

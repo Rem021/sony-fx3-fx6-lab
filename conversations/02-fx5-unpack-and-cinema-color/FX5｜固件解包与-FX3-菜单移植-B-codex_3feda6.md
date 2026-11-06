@@ -5,7 +5,7 @@
 - **Orca Category Workspace**: `FX3｜FX5 固件解包与电影菜单色彩移植`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:4055ad3d-0701-4f8f-954a-509020e82fde`
 - **Created At**: `2026-11-02T01:57:02.395Z`
-- **Updated At**: `2026-11-06T13:35:56.928Z`
+- **Updated At**: `2026-11-06T15:53:00.467Z`
 - **Captured Messages (User / Assistant)**: `27`
 
 ---

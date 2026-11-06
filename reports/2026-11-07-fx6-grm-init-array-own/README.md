@@ -353,3 +353,94 @@ libux_core:
 ```
 
 本轮**未执行**任何运行时步骤。
+
+## 11. 续研：7 个 tail helper 逐项
+
+时间：2026-11-07 16:00 PT（巡查 07:23）。本节为追加，不改变前文结论。
+
+### 11.1 逐项表
+
+7 个 helper 都是 **`br`/PLT 型**（不是 `bl`/`blr`）；没有 `tail b` 再跳。逐个解析如下：
+
+| # | 库 | helper | 结构 | 解析结果 | 结论 |
+|---:|---|---|---|---|---|
+| 1 | libuxengine | `0x74ab8` | `br x2`，GOT `0xc1fc0` | symbol `_ITM_registerTMCloneTable` | **不调用三目标**（间接到 ITM 表） |
+| 2 | libuxengine | `0x70a20` | `br x17`，PLT `0xc2e38` | `ux::core::Vector2::Vector2()` | **不调用三目标** |
+| 3 | libux_core | `0x23e28` | `br x2`，GOT `0x460fa0` | 无符号/无 reloc；形态像 destructor registry | **无法判定**（GOT 目标未解析；不是三目标地址） |
+| 4 | libux_core | `0x22ac0` | `br x17`，PLT `0x470bf8` | `__cxa_atexit` | **不调用三目标** |
+| 5 | libux_core | `0x22480` | `br x17`，PLT `0x4708d8` | `ux::core::Color::Color(unsigned char, ...)` | **不调用三目标** |
+| 6 | libux_core | `0x228f0` | `br x17`，PLT `0x470b10` | `ux::core::ID::ID()` | **不调用三目标** |
+| 7 | libux_core | `0x22eb0` | `br x17`，PLT `0x470df0` | `ux::core::Vector2::Vector2(float, float)` | **不调用三目标** |
+
+计数：
+
+```text
+不调用三目标：6 项
+无法判定：1 项
+调用三目标：0 项
+```
+
+### 11.2 细节
+
+- `0x74ab8`：
+  - 计算 `0xc4ba8` 附近的数组长度，若为 0 返回；
+  - 从 GOT `0xc1fc0` 取函数指针，`br x2`；
+  - GOT 符号为 `_ITM_registerTMCloneTable`，不是 `GraphicsEngine`/`sys_createApplication`/`InitializeIF`。
+- `0x70a20`：
+  - 标准 PLT stub；
+  - 目标 `ux::core::Vector2::Vector2()`；
+  - 不是三目标。
+- `0x23e28`：
+  - 与 `0x74ab8` 同形态：计算 `0x486b0` 数组长度，若为 0 返回；
+  - 从 GOT `0x460fa0` 取函数指针，`br x2`；
+  - GOT `0x460fa0` 在 `.rela.dyn/.rela.plt` 中没有对应符号；无法静态解析；
+  - 从形态看像 `__cxa_finalize`/destructor registry，但**不能确认**；
+  - 不是三目标地址；分类“无法判定”。
+- `0x22ac0`：PLT `__cxa_atexit`，不是三目标。
+- `0x22480`：PLT `ux::core::Color::Color(unsigned char, ...)`，不是三目标。
+- `0x228f0`：PLT `ux::core::ID::ID()`，不是三目标。
+- `0x22eb0`：PLT `ux::core::Vector2::Vector2(float, float)`，不是三目标。
+
+### 11.3 对“InitializeIF/sys_createApplication 未使用”的影响
+
+- 7 个 helper 中 **0 个调用三目标**；
+- 6 个可解析为 ITM/`__cxa_atexit`/`Vector2`/`Color`/`ID` 等静态初始化/析构/工具函数；
+- 1 个（`0x23e28`）GOT 目标无符号，但形态是 destructor registry，不是 framebuffer 初始化；
+- 结合 §10 的 14 个 init 函数（无直接/PLT/adrp-add 到三目标），**没有新增证据表明 `InitializeIF`/`sys_createApplication` 被调用**；
+- “未使用”假设继续得到支持，但仍不是运行时证明。
+
+### 11.4 本节实测 vs 推断 vs 缺失
+
+**实测**：
+
+- 7 个 helper 的入口反汇编；
+- PLT 名称（`Vector2`/`Color`/`ID`/`__cxa_atexit`）；
+- GOT `0xc1fc0` 符号 `_ITM_registerTMCloneTable`；
+- `0x23e28` 的 GOT `0x460fa0` 无符号/无 reloc；
+- 0 个 helper 直接/间接落到三目标地址。
+
+**推断**：
+
+- `0x23e28` 可能是 `__cxa_finalize`/destructor registry，但不是 framebuffer 初始化；
+- 7 个 helper 都是静态初始化/析构链，不是 UI/framebuffer 入口。
+
+**缺失**：
+
+- `0x460fa0` 的精确符号/运行时值；
+- 运行时 `[0x486f0]` 值；
+- 运行时 `GRM_fbrmInitialize` 是否命中；
+- 仍未执行任何运行时断点。
+
+### 11.5 运行时待批准方案（未执行）
+
+沿用 §10.5：
+
+```text
+断点 InitializeIF 0x2764c
+先读 [0x486f0]（own_）
+若为 0：确认 own_ 未初始化
+再断 GraphicsSystemCore::Initialize 0x27ef0
+再断 GRM_fbrmInitialize 0x23374
+```
+
+本轮**未执行**任何运行时步骤。

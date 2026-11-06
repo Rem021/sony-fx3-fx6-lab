@@ -28,4 +28,8 @@ All FX3, FX5, and FX6 system research, QEMU emulator harnesses, CP/CapID/GRM/GPE
 - **BYOF (Bring Your Own Firmware)**: Never commit proprietary Sony firmware images (`nflasha*`, `.cpio`, `appFw.so`, `cpapp-b.bin`), `.qcow2`/`.img` disks, or files > 50 MiB to Git.
 - **Original Runtime Preservation**: Live QEMU scripts reference donor binaries in `/Volumes/KAFU2T/AI/Projects/Mac/work/...`; never delete or move those donor files.
 - **Hardware Flashing Prohibition**: Full-partition cross-flashing of FX6 onto physical FX3 hardware is strictly **BLOCKED / NO-GO**. Never run USB/SD flashing against physical cameras.
-- **Real-Time GitHub Sync**: Managed by `scripts/realtime_github_sync.py` (LaunchAgent `com.kafu.sony-fx3-fx6-github-sync`).
+- **Milestone-Driven GitHub Sync (大节点主动同步机制)**: Do **NOT** run high-frequency background polling (such as 60-second timers). Instead, whenever an Agent completes a **major milestone / significant engineering checkpoint (做出一个大节点 / 阶段性成果)**, the Agent must run:
+  ```bash
+  python3 /Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/scripts/realtime_github_sync.py
+  ```
+  to export the latest categorized Orca conversations, sync newly generated reports/code, and push the milestone commit to `https://github.com/Rem021/sony-fx3-fx6-lab.git` (`main`).

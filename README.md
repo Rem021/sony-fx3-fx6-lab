@@ -190,7 +190,7 @@ All **86 multi-agent engineering conversations** (Claude, Codex, and Antigravity
 | **04** | **FX3｜虚拟机主屏菜单与 GPE 渲染修复** | [`conversations/04-fx3-vm-menu-and-gpe/`](conversations/04-fx3-vm-menu-and-gpe/README.md) | **69** | FX3 QEMU VM home screen bring-up, GPE 2D engine, `ldec` LZ77 icon decoding, VDF/ADF/OSD/SKD protocols & `r21`–`r43` 8-step menu verification |
 | **05** | **FX3｜真机刷机安全与变砖恢复研究** | [`conversations/05-fx3-flash-safety-and-recovery/`](conversations/05-fx3-flash-safety-and-recovery/README.md) | **2** | FX3 hardware flashing safety guards, brick recovery analysis, and file-level installation / recovery audits |
 
-- **Real-Time GitHub Synchronization Daemon**: Managed via [`scripts/realtime_github_sync.py`](scripts/realtime_github_sync.py) and [`scripts/export_orca_conversations.mjs`](scripts/export_orca_conversations.mjs) (backed by macOS LaunchAgent `com.kafu.sony-fx3-fx6-github-sync`), which continuously syncs new FX3/FX5/FX6 research files, reports, and categorized Orca conversation logs to `origin/main` while enforcing the strict clean-room & secret-redaction filter.
+- **Milestone-Driven GitHub Synchronization**: Managed via [`scripts/realtime_github_sync.py`](scripts/realtime_github_sync.py) and [`scripts/export_orca_conversations.mjs`](scripts/export_orca_conversations.mjs). Per `AGENTS.md` / `CLAUDE.md` / `GEMINI.md`, Agents trigger this sync upon completing each major research or engineering milestone, pushing new code, reports, and categorized Orca conversation logs to `origin/main` while enforcing the strict clean-room & secret-redaction filter.
 
 ---
 
@@ -408,7 +408,7 @@ python3 -B work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor
 | **04** | **FX3｜虚拟机主屏菜单与 GPE 渲染修复** | [`conversations/04-fx3-vm-menu-and-gpe/`](conversations/04-fx3-vm-menu-and-gpe/README.md) | **69** | FX3 QEMU 模拟器主屏开机、GPE 2D 渲染引擎、`ldec` LZ77 图标解码、VDF/ADF/OSD/SKD 协议与 `r21`–`r43` 八步菜单验收 |
 | **05** | **FX3｜真机刷机安全与变砖恢复研究** | [`conversations/05-fx3-flash-safety-and-recovery/`](conversations/05-fx3-flash-safety-and-recovery/README.md) | **2** | FX3 真机刷机门禁安全、变砖救援分析、文件级安装与恢复链路审计 |
 
-- **GitHub 实时自动同步守护进程**：由 [`scripts/realtime_github_sync.py`](scripts/realtime_github_sync.py) 与 [`scripts/export_orca_conversations.mjs`](scripts/export_orca_conversations.mjs)（配合 macOS LaunchAgent `com.kafu.sony-fx3-fx6-github-sync`）驱动，实时将最新研究源码、审计报告与 Orca 对话归档增量同步并推送至 GitHub `origin/main`（内置专有固件过滤与密钥脱敏门禁）。
+- **Agent 大节点主动同步机制**：由 [`scripts/realtime_github_sync.py`](scripts/realtime_github_sync.py) 与 [`scripts/export_orca_conversations.mjs`](scripts/export_orca_conversations.mjs) 驱动，并已写入项目 `AGENTS.md` / `CLAUDE.md` / `GEMINI.md` 规范——无需高频后台轮询，每当 Agent 完成一个阶段性大节点成果时主动触发同步，将最新研究源码、审计报告与 Orca 对话归档一键推送至 GitHub `origin/main`（内置专有固件过滤与密钥脱敏门禁）。
 
 ---
 

@@ -243,3 +243,113 @@ libgrm:
 1. 静态：逐个反汇编 init_array 的 14 个函数，检查是否间接调用 `sys_createApplication`/`GraphicsEngine` ctor；当前只验证了数组条目本身。
 2. 静态：查 `own_` 是否被 **`memcpy`/`memset`** 或外部符号写入；当前没有直接 store。
 3. 运行时（需批准）：断点 `InitializeIF`/`GraphicsSystemCore::Initialize`，先读 `[0x486f0]`；这是判断“是否使用”的最快路径。
+
+## 10. 续研：14 个 init_array 函数与 own_ memcpy/memset
+
+时间：2026-11-07 15:30 PT（巡查 07:23）。本节为追加，不改变前文结论。
+
+### 10.1 逐项结论
+
+统一扫描结果：
+
+- 14 个函数中，**没有任何直接 `bl`/`b` 到** `0x82854`（sys_createApplication）、`0x8350c`（GraphicsEngine ctor）、`0x2764c`（InitializeIF）；
+- **没有 PLT 调用**到上述目标；
+- **没有 `adrp/add`** 组成上述目标函数指针；
+- 可见指令范围内**没有 `blr`**（间接调用）；
+- 但部分函数以 tail `b` 进入 helper，helper 未展开；这些标为“无法判定”。
+
+| # | 库 | init 入口 | 直接目标 | 可见调用/尾跳 | 结论 |
+|---:|---|---|---|---|---|
+| 1 | libuxengine | `0x74b40` | 无 | tail `b 0x74ab8` | **无法判定**（tail helper 未展开） |
+| 2 | libuxengine | `0x744e0` | 无 | `bl 0x70050`，tail `b 0x71e50` | 不调用（直接/PLT）；间接未完全排除 |
+| 3 | libuxengine | `0x7451c` | 无 | 多次 `bl 0x704c0` | 不调用（直接/PLT） |
+| 4 | libuxengine | `0x74640` | 无 | 两次 `bl 0x724f0` | 不调用（直接/PLT） |
+| 5 | libuxengine | `0x74690` | 无 | `bl 0x72b40` | 不调用（直接/PLT） |
+| 6 | libuxengine | `0x7481c` | 无 | 无调用 | 不调用（函数体内无调用） |
+| 7 | libuxengine | `0x74834` | 无 | `bl 0x72b40` | 不调用（直接/PLT） |
+| 8 | libuxengine | `0x749f4` | 无 | `bl 0x724f0`，tail `b 0x70a20` | **无法判定**（tail helper 未展开） |
+| 9 | libux_core | `0x23eb0` | 无 | tail `b 0x23e28` | **无法判定**（tail helper 未展开） |
+| 10 | libux_core | `0x23cc0` | 无 | `bl 0x23bd0`，tail `b 0x22ac0` | **无法判定**（tail helper 未展开） |
+| 11 | libux_core | `0x23d00` | 无 | `bl 0x22480`，tail `b 0x22480` | **无法判定**（tail helper 未展开） |
+| 12 | libux_core | `0x23d44` | 无 | 无调用 | 不调用（函数体内无调用） |
+| 13 | libux_core | `0x23d88` | 无 | tail `b 0x228f0` | **无法判定**（tail helper 未展开） |
+| 14 | libux_core | `0x23d94` | 无 | `bl 0x22eb0`，tail `b 0x22eb0` | **无法判定**（tail helper 未展开） |
+
+计数：
+
+```text
+不调用（直接/PLT）：7 项
+无法判定（tail/helper 未展开）：7 项
+调用目标：0 项
+```
+
+**注意**：这里的“无法判定”不是“有调用证据”，而是“没有直接/PLT 证据，但 tail helper 没逐层展开”；结合前一节的全局 xref（0x82854/0x8350c/0x2764c 在 `.text` 内无直接引用），这些 init 函数**直接调用目标的可能性为 0**，只剩间接 `blr`/helper 内部调用的可能性。
+
+### 10.2 memcpy/memset 与 own_
+
+PLT 统计：
+
+```text
+libuxengine:
+  memcpy PLT 0x6f000
+  memset PLT 0x70650
+  调用点 6 个（2 memcpy + 4 memset）
+
+libux_core:
+  memcpy PLT 0x21390
+  memset PLT 0x21d90
+  调用点 15 个
+```
+
+检查：
+
+- 两库 `.text` 中 `adrp/add` 到 `own_`（0x486f0）：**0 个**；
+- 两库 `.text` 中 `str/stp/stur` 到 `#0x6f0`/`#0x6e8`：**0 个**；
+- 两库 `.text` 中引用 `InitializeIF` 的 GOT 0x460e50：**0 个**（除 InitializeIF 自身）；
+- `memcpy`/`memset` 调用点没有任何一个的目标地址是 `own_`；
+- 外部 `U GraphicsSystemInterface::own_`：未发现；
+- `own_` 仍是 BSS，静态为零；BSS 由 loader 清零，不是代码写入。
+
+**结论：`own_` 静态无写入点。** 不能排除运行时动态代码/其他模块写 BSS，但当前两库的静态代码没有写入。
+
+### 10.3 对 InitializeIF 的影响
+
+- `own_` 无静态写入 → `InitializeIF` 的 `x5=[own_]` 为 0；
+- `ldr x4,[x5]` 会先空指针；
+- 因此 `InitializeIF` 在静态可见流程里**不可用**；
+- `GraphicsSystemCore` vtable[0]=0x27ef0 仍是**条件性目标**，没有对象被赋给 `own_`。
+
+### 10.4 本节实测 vs 推断 vs 缺失
+
+**实测**：
+
+- 14 个 init 函数的入口反汇编；
+- 无直接 `bl/b`/PLT/adrp-add 到三目标；可见范围内无 `blr`；
+- 7 项 tail helper 未展开，标为无法判定；
+- memcpy/memset 调用点数与目标检查；
+- own_ 无 adrp/add/store/GOT 引用、无外部 U。
+
+**推断**：
+
+- init 函数不是 framebuffer 初始化入口；
+- own_ 从未被静态赋值，InitializeIF 未使用；
+- 目标 0x27ef0 只是条件性 vtable 目标。
+
+**缺失**：
+
+- 7 个 tail helper 的完整函数体；
+- 运行时 `[0x486f0]` 值；
+- 动态加载/外部模块是否写 own_；
+- 运行时 `GRM_fbrmInitialize` 是否命中。
+
+### 10.5 运行时待批准方案（未执行）
+
+```text
+断点 InitializeIF 0x2764c
+先读 [0x486f0]（own_）
+若为 0：确认 own_ 未初始化
+再断 GraphicsSystemCore::Initialize 0x27ef0
+再断 GRM_fbrmInitialize 0x23374
+```
+
+本轮**未执行**任何运行时步骤。

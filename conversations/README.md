@@ -18,7 +18,7 @@
 
 | # | Conversation Title | Agent | Messages | Updated (UTC) | Archive Link |
 |---|---|---|---|---|---|
-| 1 | **FX3｜FX6 系统移植进度与开源总控** | `antigravity` | 5 | `2026-11-06T14:49Z` | [View Archive](../conversations/01-fx6-system-porting/FX3｜FX6-系统移植进度与开源总控-antigravity_.md) |
+| 1 | **FX3｜FX6 系统移植进度与开源总控** | `antigravity` | 5 | `2026-11-06T14:51Z` | [View Archive](../conversations/01-fx6-system-porting/FX3｜FX6-系统移植进度与开源总控-antigravity_.md) |
 | 2 | **FX6｜系统移植到 FX3 模拟器与 CapID 门禁** | `antigravity` | 2 | `2026-11-06T13:35Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜系统移植到-FX3-模拟器与-CapID-门禁-bd85f19c-07b.md) |
 | 3 | **FX6｜根镜像构造与早期引导冒烟测试** | `codex` | 17 | `2026-11-06T13:35Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜根镜像构造与早期引导冒烟测试-2029c357-e10.md) |
 | 4 | **FX6｜启动门禁与硬件缺口深度审计** | `codex` | 10 | `2026-11-05T16:03Z` | [View Archive](../conversations/01-fx6-system-porting/FX6｜启动门禁与硬件缺口深度审计-7a4acb16-696.md) |
@@ -54,11 +54,11 @@
 
 | # | Conversation Title | Agent | Messages | Updated (UTC) | Archive Link |
 |---|---|---|---|---|---|
-| 1 | **** | `codex` | 0 | `2026-11-06T14:49Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/-codex_94ba01.md) |
-| 2 | **** | `codex` | 0 | `2026-11-06T14:49Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/-codex_29d9d9.md) |
-| 3 | **** | `codex` | 0 | `2026-11-06T14:49Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/-codex_b6eca9.md) |
-| 4 | **** | `codex` | 0 | `2026-11-06T14:49Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/-codex_04f300.md) |
-| 5 | **** | `codex` | 0 | `2026-11-06T14:49Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/-codex_de0a92.md) |
+| 1 | **FX3｜FX6 系统移植与跨机型总控** | `codex` | 0 | `2026-11-06T14:51Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜FX6-系统移植与跨机型总控-codex_94ba01.md) |
+| 2 | **FX3｜FX5 固件解包与电影菜单色彩移植总控** | `codex` | 0 | `2026-11-06T14:51Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜FX5-固件解包与电影菜单色彩移植总控-codex_29d9d9.md) |
+| 3 | **FX3｜固件逆向与 H.265 编码研究总控** | `codex` | 0 | `2026-11-06T14:51Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜固件逆向与-H.265-编码研究总控-codex_b6eca9.md) |
+| 4 | **FX3｜虚拟机主屏菜单与 GPE 渲染修复总控** | `codex` | 0 | `2026-11-06T14:51Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜虚拟机主屏菜单与-GPE-渲染修复总控-codex_04f300.md) |
+| 5 | **FX3｜真机刷机安全与变砖恢复研究总控** | `codex` | 0 | `2026-11-06T14:51Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜真机刷机安全与变砖恢复研究总控-codex_de0a92.md) |
 | 6 | **FX3｜画面停更离线定位审计** | `codex` | 22 | `2026-11-06T13:35Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜画面停更离线定位审计-85213b32-f08.md) |
 | 7 | **FX3｜宿主异常记录修复与离线测试** | `codex` | 44 | `2026-11-06T13:35Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜宿主异常记录修复与离线测试-98f50f73-d98.md) |
 | 8 | **FX3｜虚拟机菜单修复主线 B** | `codex` | 5 | `2026-11-06T13:35Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜虚拟机菜单修复主线-B-codex_d07cbf.md) |
